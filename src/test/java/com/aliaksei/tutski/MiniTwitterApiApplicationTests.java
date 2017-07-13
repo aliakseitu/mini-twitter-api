@@ -108,20 +108,11 @@ public class MiniTwitterApiApplicationTests {
     }
 
     @Test
-    public void testTimeline() throws Exception {
+    public void testWall() throws Exception {
 
         for (int i = 0; i < COUNT; i++)
-            this.mvc.perform(
-                        post("/" + MAIN_USER + "/messages")
-                        .contentType(MediaType.APPLICATION_JSON_UTF8)
-                        .content(asJsonString(messages[i])))
-                    .andExpect(status().isCreated())
-                    .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
-                    .andExpect(jsonPath("$.id", is(messages[i].getId())))
-                    .andExpect(jsonPath("$.text", is(messages[i].getText())))
-                    .andExpect(jsonPath("$.user.id", is(user.getId())))
-                    .andExpect(jsonPath("$.user.userName", is(user.getUserName())));
-        
+            testCreateUserWithMessage(user, messages[i]);
+ 
        ResultActions ra = this.mvc.perform(
                 get("/" + MAIN_USER + "/messages")
                 .contentType(MediaType.APPLICATION_JSON_UTF8))
@@ -141,35 +132,64 @@ public class MiniTwitterApiApplicationTests {
     @Test
     public void testFollowUser() throws Exception {
         
-        this.mvc.perform(
-                post("/" + MAIN_USER + "/messages")
+        testCreateUserWithMessage(user, messages[0]);
+        testCreateUserWithMessage(followingUsers[0], messages[1]);
+        
+        testFollowAction(user, followingUsers[0]);
+
+    }
+    
+    @Test
+    public void testTimeline() throws Exception {
+        testCreateUserWithMessage(user, messages[0]);
+        
+        for (int i = 0; i < FUSERSCOUNT; i++) {
+            for (int k = 0; k < FMESSAGESCOUNT; k++)
+                testCreateUserWithMessage(followingUsers[i], followingUserMessages[i][k]);
+            testFollowAction(user, followingUsers[i]);
+        }
+        
+        int all = FUSERSCOUNT * FMESSAGESCOUNT;
+        ResultActions ra = this.mvc.perform(
+                get("/" + MAIN_USER + "/timeline")
+                .contentType(MediaType.APPLICATION_JSON_UTF8))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+            .andExpect(jsonPath("$", hasSize(all)));
+       
+        int idx = 0;
+        for (int i = FUSERSCOUNT - 1; i >= 0; i--)
+            for (int k = FMESSAGESCOUNT - 1; k >= 0; k--) {
+                ra = ra
+                        .andExpect(jsonPath("$[" + idx + "].text", is(followingUserMessages[i][k].getText())))
+                        .andExpect(jsonPath("$[" + idx + "].user.id", is(followingUsers[i].getId())))
+                        .andExpect(jsonPath("$[" + idx + "].user.userName", is(followingUsers[i].getUserName())));
+                idx++;
+            }
+        
+    }
+    
+    private ResultActions testCreateUserWithMessage(User u, Message m) throws Exception{
+        return this.mvc.perform(
+                    post("/" + u.getUserName() + "/messages")
                     .contentType(MediaType.APPLICATION_JSON_UTF8)
-                    .content(asJsonString(messages[0])))
+                    .content(asJsonString(m)))
                 .andExpect(status().isCreated())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
-                .andExpect(jsonPath("$.id", is(messages[0].getId())))
-                .andExpect(jsonPath("$.text", is(messages[0].getText())))
-                .andExpect(jsonPath("$.user.id", is(user.getId())))
-                .andExpect(jsonPath("$.user.userName", is(MAIN_USER)));
-        
-        this.mvc.perform(
-                post("/" + followingUsers[0].getUserName() + "/messages")
-                    .contentType(MediaType.APPLICATION_JSON_UTF8)
-                    .content(asJsonString(messages[1])))
-                .andExpect(status().isCreated())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
-                .andExpect(jsonPath("$.id", is(messages[1].getId())))
-                .andExpect(jsonPath("$.text", is(messages[1].getText())))
-                .andExpect(jsonPath("$.user.id", is(followingUsers[0].getId())))
-                .andExpect(jsonPath("$.user.userName", is(followingUsers[0].getUserName())));
-        
-        this.mvc.perform(
-                put("/" + MAIN_USER + "/follow")
+                .andExpect(jsonPath("$.id", is(m.getId())))
+                .andExpect(jsonPath("$.text", is(m.getText())))
+                .andExpect(jsonPath("$.user.id", is(u.getId())))
+                .andExpect(jsonPath("$.user.userName", is(u.getUserName())));
+    }
+    
+    private ResultActions testFollowAction(User u, User toFollowUser) throws Exception{
+        return this.mvc.perform(
+                put("/" + u.getUserName() + "/follow")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
-                .content(asJsonString(followingUsers[0])))
+                .content(asJsonString(toFollowUser)))
             .andExpect(status().isOk())
             .andExpect(content().string(""));
-
+        
     }
     /*
      * converts a Java object into JSON representation
