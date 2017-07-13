@@ -4,7 +4,7 @@ This is the complete solution for the code challenge related to the recruiting p
 
 ## Requirements
 
-For the code challenge details and requirements please see REQUIREMENTS.md
+For the code challenge details and requirements please refer [Challenge details](docs/REQUIREMENTS.md)
 
 ## Description
 
