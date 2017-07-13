@@ -34,15 +34,15 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @WebMvcTest(MessageController.class)
 public class MessageControllerTest {
 
-	@Autowired
+    @Autowired
     private MockMvc mvc;
 
     @MockBean
     private MessageService messageService;
-    
+
     private User user;
     private Message message;
-    
+
     /*
      * converts a Java object into JSON representation
      */
@@ -53,52 +53,52 @@ public class MessageControllerTest {
             throw new RuntimeException(e);
         }
     }
-    
-    @Before 
-    public void setUp(){
-    	user = new User("alexi");
-    	message = new Message();
-    	message.setId(1);
-    	message.setText("some text");
-    	message.setUser(user);
+
+    @Before
+    public void setUp() {
+        user = new User("alexi");
+        message = new Message();
+        message.setId(1);
+        message.setText("some text");
+        message.setUser(user);
     }
-    
+
     @Test
     public void testAddMessage() throws Exception {
-    	
-    	given(messageService.createMessageForUser(message, user.getUserName())).willReturn(message);
-        
-    	this.mvc.perform(post("/alexi/messages")
-    			.contentType(MediaType.APPLICATION_JSON_UTF8)
-    			.content(asJsonString(message)))
-        .andExpect(status().isCreated())
-    	.andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
-        .andExpect(jsonPath("$.id", is(message.getId())))
-        .andExpect(jsonPath("$.text", is(message.getText())))
-        .andExpect(jsonPath("$.user.id", is(user.getId())))
-        .andExpect(jsonPath("$.user.userName", is(user.getUserName())));
-        
-    	verify(messageService, times(1)).createMessageForUser(message, user.getUserName());
+
+        given(messageService.createMessageForUser(message, user.getUserName())).willReturn(message);
+
+        this.mvc.perform(
+                    post("/alexi/messages")
+                    .contentType(MediaType.APPLICATION_JSON_UTF8)
+                    .content(asJsonString(message)))
+                .andExpect(status().isCreated())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(jsonPath("$.id", is(message.getId())))
+                .andExpect(jsonPath("$.text", is(message.getText())))
+                .andExpect(jsonPath("$.user.id", is(user.getId())))
+                .andExpect(jsonPath("$.user.userName", is(user.getUserName())));
+
+        verify(messageService, times(1)).createMessageForUser(message, user.getUserName());
         verifyNoMoreInteractions(messageService);
     }
-    
-    
+
     @Test
     public void testGetAllUserMessages() throws Exception {
-    	
-    	given(messageService.getAllUserMessages(user.getUserName())).willReturn(Arrays.asList(message));
-        
-    	this.mvc.perform(get("/alexi/messages")
-    			.contentType(MediaType.APPLICATION_JSON_UTF8))
-        .andExpect(status().isOk())
-    	.andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
-        .andExpect(jsonPath("$", hasSize(1)))
-        .andExpect(jsonPath("$[0].id", is(message.getId())))
-        .andExpect(jsonPath("$[0].text", is(message.getText())))
-        .andExpect(jsonPath("$[0].user.id", is(user.getId())))
-    	.andExpect(jsonPath("$[0].user.userName", is(user.getUserName())));
-    	
-    	verify(messageService, times(1)).getAllUserMessages(user.getUserName());
+
+        given(messageService.getAllUserMessages(user.getUserName())).willReturn(Arrays.asList(message));
+
+        this.mvc.perform(get("/alexi/messages")
+                        .contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(jsonPath("$", hasSize(1)))
+                .andExpect(jsonPath("$[0].id", is(message.getId())))
+                .andExpect(jsonPath("$[0].text", is(message.getText())))
+                .andExpect(jsonPath("$[0].user.id", is(user.getId())))
+                .andExpect(jsonPath("$[0].user.userName", is(user.getUserName())));
+
+        verify(messageService, times(1)).getAllUserMessages(user.getUserName());
         verifyNoMoreInteractions(messageService);
     }
 }

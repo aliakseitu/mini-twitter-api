@@ -1,11 +1,11 @@
 package com.aliaksei.tutski.exceptions;
 
-public class UserNotFoundException extends Exception{
+public class UserNotFoundException extends Exception {
 
-	public UserNotFoundException(String string) {
-		super(string);
-	}
-	
-	
+    private static final long serialVersionUID = 1L;
+
+    public UserNotFoundException(String string) {
+        super(string);
+    }
 
 }

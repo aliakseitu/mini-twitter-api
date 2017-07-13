@@ -22,12 +22,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @WebMvcTest(UserController.class)
 public class UserControllerTest {
 
-	@Autowired
+    @Autowired
     private MockMvc mvc;
 
     @MockBean
     private UserService userService;
-    
+
     /*
      * converts a Java object into JSON representation
      */
@@ -38,17 +38,16 @@ public class UserControllerTest {
             throw new RuntimeException(e);
         }
     }
-    
+
     @Test
     public void testFollowingUser() throws Exception {
-    	
-    	User fUser = new User("peter");
-    	this.mvc.perform(put("/alexi/follow")
-    			.contentType(MediaType.APPLICATION_JSON)
-    			.content(asJsonString(fUser)))
-        
-    	.andExpect(status().isOk())
-    	.andExpect(content().string(""));
-    	
+
+        User fUser = new User("peter");
+        this.mvc.perform(put("/alexi/follow")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(asJsonString(fUser)))
+                .andExpect(status().isOk())
+                .andExpect(content().string(""));
+
     }
 }

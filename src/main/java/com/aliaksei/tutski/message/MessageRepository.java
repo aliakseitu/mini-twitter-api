@@ -9,7 +9,7 @@ import com.aliaksei.tutski.user.User;
 
 public interface MessageRepository extends CrudRepository<Message, Integer> {
 
-	List<Message> findByUserOrderByCreatedTimeDesc(User user);
-	
-	List<Message> findByUserInOrderByCreatedTimeDesc(Set<User> users);
+    List<Message> findByUserOrderByCreatedTimeDesc(User user);
+
+    List<Message> findByUserInOrderByCreatedTimeDesc(Set<User> users);
 }

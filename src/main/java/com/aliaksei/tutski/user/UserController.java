@@ -15,19 +15,20 @@ import com.aliaksei.tutski.exceptions.UserNotFoundException;
 @RestController
 public class UserController {
 
-	@Autowired
-	UserService userService;
-	
-	@PutMapping("/{userName}/follow")
-	public void getFollowingMessages(@PathVariable String userName, @RequestBody User user) throws UserNotFoundException{
-		userService.addUserToFollow(userName, user);
-	}
-	
-	@ResponseStatus(HttpStatus.NOT_FOUND)
-	@ExceptionHandler(UserNotFoundException.class)
-	public ErrorMessage notFoundException(UserNotFoundException exception){
-		ErrorMessage em = new ErrorMessage();
-		em.setMessage(exception.getMessage());
-		return em;
-	}
+    @Autowired
+    UserService userService;
+
+    @PutMapping("/{userName}/follow")
+    public void getFollowingMessages(@PathVariable String userName, @RequestBody User user)
+            throws UserNotFoundException {
+        userService.addUserToFollow(userName, user);
+    }
+
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(UserNotFoundException.class)
+    public ErrorMessage notFoundException(UserNotFoundException exception) {
+        ErrorMessage em = new ErrorMessage();
+        em.setErrorMessage(exception.getMessage());
+        return em;
+    }
 }

@@ -6,6 +6,6 @@ import org.springframework.data.repository.CrudRepository;
 
 import com.aliaksei.tutski.user.User;
 
-public interface ConnectionRepository extends CrudRepository<Connection, Integer>{
-	List<Connection> findByUser(User user);
+public interface ConnectionRepository extends CrudRepository<Connection, Integer> {
+    List<Connection> findByUser(User user);
 }
