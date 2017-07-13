@@ -19,7 +19,7 @@ public class Message {
 	@GeneratedValue
 	private int id;
 	
-	@Size(max = 10)
+	@Size(max = 140)
 	private String text;
 	
 	@Override

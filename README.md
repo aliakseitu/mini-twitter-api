@@ -11,16 +11,84 @@ For the code challenge details and requirements please refer [Challenge details]
 This project provides the solution for building a simple social networking application, similar to Twitter, which is
 exposed through a web API. The application supports the scenarios listed below.
 
+## Build and run
+
+For starting the application you need to run following command in the console:
+```
+mvn spring-boot:run
+```
+
 ## Scenarios
 
+For testing purposes you can use one of the following method:
+ - use some add-on for Firefox like (HTTPRequester)[https://addons.mozilla.org/En-us/firefox/addon/httprequester/]
+ - use some add-on for Chrome like (Postman)[https://chrome.google.com/webstore/detail/postman/fhbjgbiflinjbdggehcddcbncdddomop?hl=en]
+ - use command line tool cUrl
+
+For the convinience examples below are in the following format:
+
+URL: `target API url`
+Content: `Content body in JSON format`
+Method: `HTTP method used for reaching the API`
+Status: `HTTP Response status code`
+Response: `HTTP Response content body`
+ 
 ### Posting
 
-A user should be able to post a 140 character message.
+A user can post a 140 character message. 
 
+URL:
+```
+    http://localhost:8080/alexi/messages
+```
+Content:
+```
+    {
+	    "text": "Some text message"
+    }
+``` 
+Method:
+```
+    POST
+```
+Status:
+```
+	201
+```
+Response:
+```
+{
+    "id": 1,
+    "text": "Some text message",
+    "createdTime": {
+        "dayOfMonth": 13,
+        "dayOfWeek": "THURSDAY",
+        "dayOfYear": 194,
+        "month": "JULY",
+        "monthValue": 7,
+        "year": 2017,
+        "hour": 10,
+        "minute": 17,
+        "nano": 653000000,
+        "second": 35,
+        "chronology": {
+            "id": "ISO",
+            "calendarType": "iso8601"
+        }
+    },
+    "user": {
+        "id": 1,
+        "userName": "alexi"
+    }
+}
+```
+ 
 ### Wall
 
-A user should be able to see a list of the messages they've posted, in reverse
+A user can see a list of the messages they've posted, in reverse
 chronological order.
+
+
 
 ### Following
 
@@ -32,24 +100,3 @@ reciprocal: Alice can follow Bob without Bob having to follow Alice.
 A user should be able to see a list of the messages posted by all the people
 they follow, in reverse chronological order.
 
-## Details
-
-- use JAVA
-- provide some documentation for the API, so that we know how to use it!
-- don't care about registering users: a user is created as soon as they post
-  their first message
-- don't care about user authentication
-- don't care about frontend, only backend
-- don't care about storage: storing everything in memory is fine
-
-## Submitting
-
-Place your code on https://github.com.
-
-## Tips
-
-Please write your solution provided an easy option to build it and run it on macOS/windows.
-
-We appreciate people have day jobs and other commitments, so please let us know if you need more time!
-
-Please do not publish your solution, for example on your blog.
