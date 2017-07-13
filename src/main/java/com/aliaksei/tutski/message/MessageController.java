@@ -44,7 +44,7 @@ public class MessageController {
 		return messageService.getAllUserMessages(userName);
 	}
 	
-	@GetMapping({"/{userName}/timeline", "/{userName}/following"})
+	@GetMapping({"/{userName}/timeline", "/{userName}/follow"})
 	public List<Message> getAllFollowingMessages(@PathVariable String userName) throws UserNotFoundException{
 		return messageService.getAllFollowingUserMessages(userName);
 	}
