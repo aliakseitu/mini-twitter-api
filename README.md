@@ -164,8 +164,7 @@ Response:
 
 ### Timeline
 
-A user should be able to see a list of the messages posted by all the people
-they follow, in reverse chronological order.
+A user can see a list of the messages posted by all the people they follow, in reverse chronological order.
 
 URL:
 ```
