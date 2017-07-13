@@ -1,15 +1,14 @@
-# Mini Twitter API
+# Code Challenge
 
-This is the complete solution for the code challenge related to the recruiting process for HSBC. 
+You have received this challenge as part of the recruiting process for HSBC. The contents of this exercise are confidential, so please do not distribute.
 
-## Requirements
-
-For the code challenge details and requirements please see REQUIREMENTS.md
+You have 7 days to complete this challenge but it shouldn't take you longer than a few hours. Please send it back as soon as you're done.
 
 ## Description
 
-This project provides the solution for building a simple social networking application, similar to Twitter, which is
-exposed through a web API. The application supports the scenarios listed below.
+Build a simple social networking application, similar to Twitter, and
+expose it through a web API. The application should support the scenarios
+below.
 
 ## Scenarios
 
